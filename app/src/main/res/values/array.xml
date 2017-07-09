@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="logos">
+        <item>@drawable/facebook</item>
+        <item>@drawable/twitter</item>
+        <item>@drawable/card_machine</item>
+        <item>@drawable/router</item>
+        <item>@drawable/gmail</item>
+        <item>@drawable/error_404</item>
+    </string-array>
+</resources>
