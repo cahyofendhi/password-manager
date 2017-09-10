@@ -36,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.rv_apps);
 
         applistAdapter = new ApplistAdapter(apps, getApplicationContext());
-        applistAdapter.notifyDataSetChanged();
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(applistAdapter);
+        applistAdapter.notifyDataSetChanged();
     }
 }

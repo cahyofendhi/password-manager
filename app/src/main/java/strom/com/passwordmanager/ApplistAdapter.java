@@ -50,12 +50,12 @@ public class ApplistAdapter extends RecyclerView.Adapter<ApplistAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.logo.setImageResource(ids.getResourceId(position, 0));
-        holder.name.setText(apps.get(position).toString());
+        holder.name.setText(apps.get(position).appName);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return apps.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
