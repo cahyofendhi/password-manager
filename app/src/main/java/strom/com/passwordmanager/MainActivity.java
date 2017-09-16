@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         applistAdapter.notifyDataSetChanged();
     }
 
-    public void appCardClicked(View view) {
+    public void appCardClicked() {
 
     }
 }
