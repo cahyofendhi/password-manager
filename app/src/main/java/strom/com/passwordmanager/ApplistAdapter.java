@@ -1,6 +1,7 @@
 package strom.com.passwordmanager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
@@ -48,9 +49,19 @@ public class ApplistAdapter extends RecyclerView.Adapter<ApplistAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.logo.setImageResource(ids.getResourceId(position, 0));
         holder.name.setText(apps.get(position).appName);
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, AppProfile.class);
+                intent.putExtra("position", position);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
