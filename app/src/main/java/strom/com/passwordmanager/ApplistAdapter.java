@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +54,7 @@ public class ApplistAdapter extends RecyclerView.Adapter<ApplistAdapter.ViewHold
         holder.logo.setImageResource(ids.getResourceId(position, 0));
         holder.name.setText(apps.get(position).appName);
 
-        holder.name.setOnClickListener(new View.OnClickListener() {
+        holder.containerCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, AppProfile.class);
@@ -70,12 +71,14 @@ public class ApplistAdapter extends RecyclerView.Adapter<ApplistAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        CardView containerCard;
         ImageButton favourite;
         ImageView logo;
         TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            containerCard = (CardView) itemView.findViewById(R.id.container_card);
             favourite = (ImageButton) itemView.findViewById(R.id.ib_favourite_app);
             logo = (ImageView) itemView.findViewById(R.id.iv_app_logo);
             name = (TextView) itemView.findViewById(R.id.tv_app_name);
