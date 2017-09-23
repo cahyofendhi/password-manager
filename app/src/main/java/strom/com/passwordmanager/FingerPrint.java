@@ -3,6 +3,7 @@ package strom.com.passwordmanager;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -34,6 +35,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
+import strom.com.passwordmanager.prefs.AppState;
+
 public class FingerPrint extends AppCompatActivity {
 
     private KeyStore keyStore;
@@ -42,11 +45,19 @@ public class FingerPrint extends AppCompatActivity {
     private TextView textView;
     private EditText password;
     private Button checkPassword;
+    AppState appState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finger_print);
+
+        appState = new AppState(this);
+        if(appState.isVerified()){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         password = (EditText) findViewById(R.id.password);
         checkPassword = (Button) findViewById(R.id.open_the_wault);
