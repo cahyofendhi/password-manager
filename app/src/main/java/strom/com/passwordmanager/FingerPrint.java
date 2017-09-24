@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,11 +37,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import strom.com.passwordmanager.prefs.AppState;
+import strom.com.passwordmanager.prefs.CheckFetchDetails;
 
 public class FingerPrint extends AppCompatActivity {
 
     private KeyStore keyStore;
-    private static final String KEY_NAME = "androidHive";
+    private static final String KEY_NAME = "thisainthappening";
     private Cipher cipher;
     private TextView textView;
     private EditText password;
@@ -52,6 +54,12 @@ public class FingerPrint extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finger_print);
 
+        CheckFetchDetails checkFetchDetails = new CheckFetchDetails(this);
+        if(checkFetchDetails.getFirstTime()) {
+            Intent intent = new Intent(this, SetPin.class);
+            startActivity(intent);
+            finish();
+        }
         appState = new AppState(this);
         if(appState.isVerified()){
             Intent intent = new Intent(this, MainActivity.class);
@@ -79,6 +87,15 @@ public class FingerPrint extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+
+        checkPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!password.getText().toString().isEmpty()) {
+
+                }
             }
         });
 
