@@ -26,16 +26,17 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="strom.com.passwordmanager" />
 
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".AppProfile" />
-        <activity android:name=".FingerPrint">
+
+        <activity android:name=".SetPin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SetPin"></activity>
+        <activity android:name=".FingerPrint"/>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".AppProfile" />
     </application>
 
 </manifest>

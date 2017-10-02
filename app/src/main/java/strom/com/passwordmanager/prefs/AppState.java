@@ -15,6 +15,7 @@ public class AppState {
 
     String PREF_NAME = "password-checkfetchdetails";
     String STATE = "state";
+    String IS_FIRST = "CHECK_OPEN_FIRST";
 
     public AppState(Context context) {
         this.context = context;
@@ -30,4 +31,21 @@ public class AppState {
         editor.putBoolean(STATE, state);
         editor.commit();
     }
+
+    /**
+     * set when have open in first time
+     */
+    public void setHaveOpened(){
+        editor.putBoolean(IS_FIRST, true);
+        editor.commit();
+    }
+
+    /**
+     * get status app opened
+     * @return
+     */
+    public boolean isOpened(){
+        return sharedPreferences.getBoolean(IS_FIRST, false);
+    }
+
 }

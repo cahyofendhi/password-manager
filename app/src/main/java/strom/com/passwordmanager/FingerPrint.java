@@ -3,6 +3,7 @@ package strom.com.passwordmanager;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
@@ -41,6 +42,10 @@ import strom.com.passwordmanager.prefs.CheckFetchDetails;
 
 public class FingerPrint extends AppCompatActivity {
 
+    public static Intent instance(Context context){
+        return new Intent(context, FingerPrint.class);
+    }
+
     private KeyStore keyStore;
     private static final String KEY_NAME = "thisainthappening";
     private Cipher cipher;
@@ -55,11 +60,11 @@ public class FingerPrint extends AppCompatActivity {
         setContentView(R.layout.activity_finger_print);
 
         CheckFetchDetails checkFetchDetails = new CheckFetchDetails(this);
-        if(checkFetchDetails.getFirstTime()) {
-            Intent intent = new Intent(this, SetPin.class);
-            startActivity(intent);
-            finish();
-        }
+//        if(checkFetchDetails.getFirstTime()) {
+//            Intent intent = new Intent(this, SetPin.class);
+//            startActivity(intent);
+//            finish();
+//        }
         appState = new AppState(this);
         if(appState.isVerified()){
             Intent intent = new Intent(this, MainActivity.class);
@@ -67,6 +72,7 @@ public class FingerPrint extends AppCompatActivity {
             finish();
         }
 
+        textView    = (TextView) findViewById(R.id.errorText);
         password = (EditText) findViewById(R.id.password);
         checkPassword = (Button) findViewById(R.id.open_the_wault);
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
