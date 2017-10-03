@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -57,89 +58,90 @@ public class FingerPrint extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finger_print);
-
-        CheckFetchDetails checkFetchDetails = new CheckFetchDetails(this);
-//        if(checkFetchDetails.getFirstTime()) {
-//            Intent intent = new Intent(this, SetPin.class);
-//            startActivity(intent);
-//            finish();
-//        }
         appState = new AppState(this);
-        if(appState.isVerified()){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        Log.d("status_verified", appState.isVerified()+"");
+        if(appState.isVerified()){ // check when app verified
+            gotoNextPage(); // go to next page
+        } else {
+            setContentView(R.layout.activity_finger_print);
 
-        textView    = (TextView) findViewById(R.id.errorText);
-        password = (EditText) findViewById(R.id.password);
-        checkPassword = (Button) findViewById(R.id.open_the_wault);
-        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+            CheckFetchDetails checkFetchDetails = new CheckFetchDetails(this);
 
-        password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            textView = (TextView) findViewById(R.id.errorText);
+            password = (EditText) findViewById(R.id.password);
+            checkPassword = (Button) findViewById(R.id.open_the_wault);
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+            FingerprintManager fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length() >= 4)
-                    checkPassword.setEnabled(true);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        checkPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!password.getText().toString().isEmpty()) {
+            password.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 }
-            }
-        });
 
-        if(!fingerprintManager.isHardwareDetected()){
-            /**
-             * An error message will be displayed if the device does not contain the fingerprint hardware.
-             * However if you plan to implement a default authentication method,
-             * you can redirect the user to a default authentication activity from here.
-             * Example:
-             * Intent intent = new Intent(this, DefaultAuthenticationActivity.class);
-             * startActivity(intent);
-             */
-            textView.setText("Your Device does not have a Fingerprint Sensor");
-        }else {
-            // Checks whether fingerprint permission is set on manifest
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                textView.setText("Fingerprint authentication permission not enabled");
-            }else{
-                // Check whether at least one fingerprint is registered
-                if (!fingerprintManager.hasEnrolledFingerprints()) {
-                    textView.setText("Register at least one fingerprint in Settings");
-                }else{
-                    // Checks whether lock screen security is enabled or not
-                    if (!keyguardManager.isKeyguardSecure()) {
-                        textView.setText("Lock screen security not enabled in Settings");
-                    }else{
-                        generateKey();
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (charSequence.length() >= 4)
+                        checkPassword.setEnabled(true);
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
+            checkPassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!password.getText().toString().isEmpty()) {
+                        appState.setIsVerified(); // set when verified
+                        gotoNextPage(); // go to next page
+                    }
+                }
+            });
+
+            if (!fingerprintManager.isHardwareDetected()) {
+                /**
+                 * An error message will be displayed if the device does not contain the fingerprint hardware.
+                 * However if you plan to implement a default authentication method,
+                 * you can redirect the user to a default authentication activity from here.
+                 * Example:
+                 * Intent intent = new Intent(this, DefaultAuthenticationActivity.class);
+                 * startActivity(intent);
+                 */
+                textView.setText("Your Device does not have a Fingerprint Sensor");
+            } else {
+                // Checks whether fingerprint permission is set on manifest
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                    textView.setText("Fingerprint authentication permission not enabled");
+                } else {
+                    // Check whether at least one fingerprint is registered
+                    if (!fingerprintManager.hasEnrolledFingerprints()) {
+                        textView.setText("Register at least one fingerprint in Settings");
+                    } else {
+                        // Checks whether lock screen security is enabled or not
+                        if (!keyguardManager.isKeyguardSecure()) {
+                            textView.setText("Lock screen security not enabled in Settings");
+                        } else {
+                            generateKey();
 
 
-                        if (cipherInit()) {
-                            FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
-                            FingerprintHandler helper = new FingerprintHandler(this);
-                            helper.startAuth(fingerprintManager, cryptoObject);
+                            if (cipherInit()) {
+                                FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                                FingerprintHandler helper = new FingerprintHandler(this);
+                                helper.startAuth(fingerprintManager, cryptoObject);
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    public void gotoNextPage(){
+        startActivity(MainActivity.instance(this)); // go to MainActivity when have been verified
+        finish();
     }
 
     @TargetApi(Build.VERSION_CODES.M)

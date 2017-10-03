@@ -1,5 +1,6 @@
 package strom.com.passwordmanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,10 @@ import strom.com.passwordmanager.prefs.AppState;
 import strom.com.passwordmanager.prefs.CheckFetchDetails;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static Intent instance(Context context){
+        return new Intent(context, MainActivity.class);
+    }
 
     RecyclerView recyclerView;
     ApplistAdapter applistAdapter;
