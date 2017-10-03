@@ -32,6 +32,7 @@ public class AppState {
         editor.commit();
     }
 
+    //start
     /**
      * set when have open in first time
      */
@@ -47,5 +48,5 @@ public class AppState {
     public boolean isOpened(){
         return sharedPreferences.getBoolean(IS_FIRST, false);
     }
-
+    // end
 }
