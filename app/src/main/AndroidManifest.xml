@@ -27,15 +27,15 @@
             android:value="strom.com.passwordmanager" />
 
 
-        <activity android:name=".SetPin">
+        <activity android:name=".SetPin"> // set pinActivity open in the first time
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FingerPrint"/>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".FingerPrint"/> 
+        <activity android:name=".MainActivity"/>
         <activity android:name=".AppProfile" />
     </application>
 

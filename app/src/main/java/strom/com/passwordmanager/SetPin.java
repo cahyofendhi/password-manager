@@ -24,29 +24,32 @@ public class SetPin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        //start
+        // check open in the first time or not
         this.activity   = this;
         this.state  = new AppState(this);
         if (state.isOpened()){
-            gotoNextPage();
+            gotoNextPage(); // go to next page when app have been opened
         } else {
-            setContentView(R.layout.activity_set_pin);
+            setContentView(R.layout.activity_set_pin); // set layout of set pin activity
 
             pinOne = (EditText) findViewById(R.id.pin_first);
             pinTwo = (EditText) findViewById(R.id.pin_second);
             setPin = (Button) findViewById(R.id.set_pin);
-            setPin.setOnClickListener(new View.OnClickListener() {
+            setPin.setOnClickListener(new View.OnClickListener() { // action click button set pin
                 @Override
                 public void onClick(View v) {
                     state.setHaveOpened(); // have opened
-                    gotoNextPage();
+                    gotoNextPage(); // go to next page
                 }
             });
         }
     }
 
-    public void gotoNextPage(){
-        startActivity(FingerPrint.instance(activity));
-        finish();
+    public void gotoNextPage(){ // go to next page
+        startActivity(FingerPrint.instance(activity)); // go to fingerPrint activity
+        finish(); // finish setPin activity
     }
-
+    // end
 }
